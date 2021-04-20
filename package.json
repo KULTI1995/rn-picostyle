@@ -1,0 +1,23 @@
+{
+  "name": "picostyle",
+  "version": "1.0.0",
+  "description": "Created with great love by Kamil Niedbalski. Nickname Json. website: pixelkoduje.pl",
+  "repository": {
+    "url": "https://github.com/KULTI1995/picostyle",
+    "type": "git"
+  },
+  "main": "mikroTW.tsx",
+  "author": "pixelkoduje.pl",
+  "license": "MIT",
+  "dependencies": {
+    "@expo-google-fonts/dev": "^0.1.0",
+    "expo-font": "^9.1.0",
+    "expo-linear-gradient": "^9.1.0",
+    "memoize-one": "^5.1.1",
+    "react": "^17.0.2",
+    "react-combine-provider": "^0.1.3",
+    "react-native": "^0.64.0",
+    "react-native-animatable": "^1.3.3",
+    "unstated-next": "^1.1.0"
+  }
+}
