@@ -1,19 +1,20 @@
 // @ts-nocheck
 
-import React, { useState, useEffect, useCallback, useMemo, memo, ReactComponentElement } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react'
 
 import { ThemeProvider, useTheme, AppProvider, LocalizationProvider, useLocalization } from './Providers'
 
 import { createContainer, useContainer as useContext } from 'unstated-next';
 import { combineProviders } from 'react-combine-provider';
 import * as Animatable from 'react-native-animatable';
+import { usePersistStorage as usePersistState } from "react-native-use-persist-storage";
 
 import {
   ActivityIndicator, Button, DrawerLayoutAndroid
   , Image, ImageBackground, KeyboardAvoidingView, Modal, NavigatorIOS
   , Picker, PickerIOS, ProgressBarAndroid, ProgressViewIOS, ScrollView, SegmentedControlIOS, Slider
   , SnapshotViewIOS, Switch, RecyclerViewBackedScrollView, RefreshControl, SafeAreaView, StatusBar
-  , Text, TextInput, ToastAndroid, ToolbarAndroid
+  , Text, TextInput, ToastAndroid
   , TouchableHighlight, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback
   , View, FlatList, SectionList, VirtualizedList, Pressable, Touchable
 } from 'react-native'
@@ -483,7 +484,6 @@ tw.StatusBar = tw(StatusBar, "StatusBar")
 tw.Text = tw(Text, "Text")
 tw.TextInput = tw(TextInput, "TextInput")
 tw.ToastAndroid = tw(ToastAndroid, "ToastAndroid")
-tw.ToolbarAndroid = tw(ToolbarAndroid, "ToolbarAndroid")
 tw.TouchableHighlight = tw(TouchableHighlight, "TouchableHighlight")
 tw.TouchableNativeFeedback = tw(TouchableNativeFeedback, "TouchableNativeFeedback")
 tw.TouchableOpacity = tw(TouchableOpacity, "TouchableOpacity")
@@ -659,6 +659,7 @@ export {
   combineProviders,
   useContext,
   LocalizationProvider,
-  useLocalization
+  useLocalization,
+  usePersistState
 }
 export default tw
