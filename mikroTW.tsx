@@ -25,7 +25,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 // fonts
 import * as fonts from '@expo-google-fonts/dev'
 import * as Font from 'expo-font';
-import { TypingsType, LayoutType, TypographyType } from './AllTypings';
+import { AllSuperTypes, TypingsType, LayoutType, TypographyType } from './AllTypings';
 
 import memoizeOne from 'memoize-one';
 
@@ -69,13 +69,11 @@ const DecodeTransform = (string: String, size = { "height": 0, "width": 0 }, tra
 
       const HowPercent = isFull ? widthHeightDetectWidth : number1 / number2 * widthHeightDetectWidth
       const HowPx = +`${minusPlus && '-'}${numberOrFull * 0.25 * 16}`
-
       let TranslateText = 0 | ""
 
       if (isNumber || isFull) { TranslateText = HowPercent }
       else { TranslateText = HowPx }
-
-      if (minusPlus == '-') { TranslateText = -TranslateText }
+      if (minusPlus == '-' && isFull) { TranslateText = -TranslateText }
       if (xOrY == "x") {
         ClassObject['transform'].push({ translateX: TranslateText })
       } else {
@@ -171,8 +169,7 @@ const ThemeClassDecode = (theme: String, string: String) => {
     /(dark:)(\S+)/g
   ) || []
 
-  let cutString = string.replace(/((dark:)(\S+))/g, " ");
-
+  let cutString = string.replace(/((dark:)(\S+))|(dark:)/g, " ");
   webHooksFromTailwindString = webHooksFromTailwindString.map((item) => {
     const [pseudo, className] = item.split(":")
     if (pseudo === "dark" && theme == "dark") {
@@ -180,7 +177,6 @@ const ThemeClassDecode = (theme: String, string: String) => {
     }
     return ""
   }).join(" ")
-
   return cutString + " " + webHooksFromTailwindString
 }
 
@@ -218,12 +214,29 @@ const AnimationDecode = (styles: String) => {
   return animationProps
 }
 
-const GradientDecode = (string: String) => {
+const GradientDecode = (string: String, theme) => {
   let gradientPosition = [[1, 0], [0, 0]]
 
   let webHooksFromTailwindString = string.match(
     / (from-|via-|to-)(\S+)/g
   ) || []
+  
+  if(theme == 'dark'){
+    let darkDecode = string.match(
+      / (dark:from-|dark:via-|dark:to-)(\S+)/g
+    ) || []
+  
+    /// to improve performance
+    webHooksFromTailwindString = webHooksFromTailwindString.map(string => {
+      let item = string.split("-")[0].trim()
+      let findInDark = darkDecode.find(element => element.search(item) !== -1);
+      if(findInDark){
+        return findInDark
+      } else{
+        return string
+      }
+    })
+  }
 
   let gradientPositionString = string.match(
     /(gradient-to-)(\S+)/g
@@ -293,7 +306,7 @@ const useComponentSize = () => {
 const memoizeGradientDecode = memoizeOne(GradientDecode)
 const memoizeAnimationDecode = memoizeOne(AnimationDecode)
 
-const tw = <TComponent extends React.FC<React.ComponentProps<TComponent> & TypingsType & LayoutType & TypographyType>>(Component: TComponent, DisplayName = Component.name) => {
+const tw = <TComponent extends React.FC<React.ComponentProps<TComponent> & AllSuperTypes>>(Component: TComponent, DisplayName = Component.name) => {
   return (strings, ...args): TComponent => {
     return memo((props) => {
       // console.time("Component Render Time");
@@ -348,7 +361,7 @@ const tw = <TComponent extends React.FC<React.ComponentProps<TComponent> & Typin
       }, [props.allProps])
 
       const Theme = useMemo(() => {
-        const styles = mapStyles.concat(" ", pseudoClass).replace(/(gradient-to-|from-|via-|to-|animation:|iterationDelay:|iterationCount:|transition:|direction:|easing:|delay:|native|first:|last:|odd:|even:|translate-y-|-translate-y-|shadow-|rotate|-rotate)(\S+)/g, "")
+        const styles = mapStyles.concat(" ", pseudoClass).replace(/(gradient-to-|from-|translate-x-|translate-y-|-translate-y-|-translate-x-|via-|to-|scale-|scale-x-|scale-y-|skew-x-|skew-y-|animation:|iterationDelay:|iterationCount:|transition:|direction:|easing:|delay:|native|first:|last:|odd:|even:|translate-y-|-translate-y-|shadow-|rotate|-rotate)(\S+)/g, "")
         if (themeStyle && theme == 'dark') {
 
           const styleArray = styles.split(/ +|\n/).filter(Boolean)
@@ -357,7 +370,7 @@ const tw = <TComponent extends React.FC<React.ComponentProps<TComponent> & Typin
           return ThemeClassDecode(theme, themeStringFromStyle)
 
         }
-        return styles.replace(/(dark:)(\S+)/g, "")
+        return styles.replace(/((dark:)(\S+))|(dark:)/g, "")
       }, [mapStyles, theme, themeStyle, props.allProps])
 
       const fontFamily = useMemo(() => {
@@ -397,18 +410,20 @@ const tw = <TComponent extends React.FC<React.ComponentProps<TComponent> & Typin
         }
         setAllClass();
 
+        if (DisplayName == "AnimatableComponent") {
+          setExtraProps(memoizeAnimationDecode(mapStyles))
+        }
+      }, [mapStyles, Component])
+
+      useEffect(() => {
         if (DisplayName == 'LinearGradient' && gradientMatch) {
-          const [gradientArray, gradientPosition] = memoizeGradientDecode(mapStyles)
+          const [gradientArray, gradientPosition] = memoizeGradientDecode(mapStyles, theme)
           setLinearGradient(gradientArray)
           setGradientPosition(gradientPosition)
         } else {
           setLinearGradient(['transparent', 'transparent'])
         }
-
-        if (DisplayName == "AnimatableComponent") {
-          setExtraProps(memoizeAnimationDecode(mapStyles))
-        }
-      }, [mapStyles, Component])
+      }, [mapStyles, Component, theme])
 
       // przekazanie miejsc, do propsów (first, last, odd, even)
       const children = useMemo(() => {
@@ -500,7 +515,6 @@ tw.css = (strings: Array<String>, ...args: Array<Function>) => {
   }
 }
 
-// ${//props?.flexBasis ? 'bg-'+props.bg: ""}
 const FlexBox = (props) => {
   let styleString = ""
 
@@ -521,7 +535,7 @@ const FlexBox = (props) => {
 
   for (const [key, value] of Object.entries(props)) {
     if (config[key] !== undefined) {
-      styleString += config[key](value)
+      styleString += " " + config[key](value)
     }
   }
   return styleString
@@ -551,7 +565,7 @@ const Spacing = (props) => {
 
   for (const [key, value] of Object.entries(props)) {
     if (config[key] !== undefined) {
-      styleString += config[key](value)
+      styleString += " " + config[key](value)
     }
   }
   return styleString
@@ -569,15 +583,15 @@ const Layout = (props) => {
     maxW: (value) => `max-w-${value}`,
     maxH: (value) => `max-h-${value}`,
     overflow: (value) => `overflow-${value}`,
-    overflowX: (value) => `overflow-x-${value}`,
-    overflowY: (value) => `overflow-y-${value}`,
+    // overflowX: (value) => `overflow-x-${value}`,
+    // overflowY: (value) => `overflow-y-${value}`,
     display: (value) => `${value}`,
     verticalAlign: (value) => `align-${value}`,
   }
 
   for (const [key, value] of Object.entries(props)) {
     if (config[key] !== undefined) {
-      styleString += config[key](value)
+      styleString += " " + config[key](value)
     }
   }
   return styleString
@@ -614,7 +628,7 @@ const Effects = (props) => {
     generateClassStringPositiveNegative(value, "rotate-")
     if (config[key] !== undefined) {
       // console.log([key, value], generateClassStringPositiveNegative(value, "rotate-"))
-      styleString += config[key](value)
+      styleString += " " + config[key](value)
     }
   }
   return styleString
@@ -640,7 +654,7 @@ const Typography = (props) => {
 
   for (const [key, value] of Object.entries(props)) {
     if (config[key] !== undefined) {
-      styleString += config[key](value)
+      styleString += " " + config[key](value)
     }
   }
   return styleString

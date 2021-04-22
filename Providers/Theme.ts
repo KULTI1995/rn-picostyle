@@ -2,21 +2,22 @@ import { useState, useEffect } from "react";
 
 import { createContainer } from 'unstated-next';
 
-const ThemeContext = (initialState = {}) => {
+import { usePersistStorage as usePersistState } from "react-native-use-persist-storage";
+
+const ThemeContext = (initialState = {theme: {}, persist: false}) => {
   // const ThemeProps = useMemo(() => (initialState), [initialState])
-  const [theme, setTheme] = useState<"light"|"dark">("light");
-  const [themeStyle, setThemeStyle] = useState(initialState);
+  const [theme, setTheme, restored] = usePersistState<"light"|"dark">("@persist_theme", "light", {persist: !!initialState['persist']});
+  const [themeStyle, setThemeStyle] = useState(initialState['theme']);
   
   const switchTheme = (theme:"light"|"dark") => setTheme(theme);
-  const switchThemeStyle = (themeStyle: {}) => setThemeStyle(themeStyle);
 
   useEffect(() => {
-    if (initialState) {
-      setThemeStyle(initialState || {})
+    if (initialState['theme']) {
+      setThemeStyle(initialState['theme'] || {});
     }
-  }, [initialState])
+  }, [initialState.theme])
 
-  return { theme, themeStyle, switchTheme, switchThemeStyle }
+  return { theme, themeStyle, switchTheme, restored }
 }
 
 const useTheme = createContainer(ThemeContext);

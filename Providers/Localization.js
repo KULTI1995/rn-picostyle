@@ -5,8 +5,10 @@ import i18n from 'i18n-js'; // or whatever library you want
 
 import { createContainer } from 'unstated-next';
 
+import { usePersistStorage as usePersistState } from "react-native-use-persist-storage";
+
 const LocalizationContext = (initialState = {}) => {
-  const [locale, setLocale] = useState(Localization.locale?.substring(0, 2) || "");
+  const [locale, setLocale, restored] = usePersistState("@persist_localization", Localization.locale?.substring(0, 2) || "", {persist: !!initialState['persist']});
   const [initialStateChange, setInitialStateChange] = useState();
 
   useEffect(() => {
@@ -22,6 +24,7 @@ const LocalizationContext = (initialState = {}) => {
       t: (scope, options) => i18n.t(scope, { locale, ...options }),
       locale,
       setLocale,
+      restored
     }),
     [locale, initialStateChange]
   );
