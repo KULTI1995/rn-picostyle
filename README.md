@@ -7,10 +7,7 @@
 - Dark theme, inline :dark - All of properties have :dark
 - Pseudoclass No extra steps. :first, :last, :odd, :even
 - **Support Tailwind gradient, translate, rotate, scale !**
-- There are over 2500 fonts to choose from. No extra steps(for DEV). Just  fontFamily=""
-```react
-<ReservationCaptionText fontFamily="Lato_400Regular">Reserved</ReservationCaptionText>
-```
+- There are over 2500 fonts to choose from. No extra steps(for DEV), with realtime update. Just fontFamily=""
 
 ## Install and usage:
 ```
@@ -22,7 +19,7 @@ import tw, { ThemeProvider, LocalizationProvider, useTheme, useLocalization, com
 ```
 
 ## demo
-#### Just looking. It contains everything you need to know!  [Link](https://github.com/KULTI1995/rn-picostyle/blob/master/Examples/demo.jsx "Link to showcase project")
+#### Just looking. It contains everything you need to know!  [Link](https://github.com/KULTI1995/picostyle/examples/index.jsx "Heading link")
 <img src="https://user-images.githubusercontent.com/14282128/115757576-c29a8980-a39e-11eb-8ecd-7c6905fdbf71.png" width="60%">
 
 ## Guide
@@ -107,6 +104,8 @@ const Box = tw.View`w-8 h-8 bg-red-200 rounded m-1 last:bg-pink-200 first:bg-blu
 ```
 #### 6. Using fonts, no extra steps!(DEV) Over 2500 to choose from. With prompting, but not only for fonts !
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/14282128/115872915-a3553800-a442-11eb-98b2-7400c6310e51.gif)
+
+Usage fonts, in production: [Link](https://docs.expo.io/guides/using-custom-fonts "Expo font")
 
 ### TODO:
 - Improving and increasing the speed
