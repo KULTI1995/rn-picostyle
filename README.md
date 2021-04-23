@@ -9,6 +9,8 @@
 - **Support Tailwind gradient, translate, rotate, scale !**
 - There are over 2500 fonts to choose from. No extra steps(for DEV), with realtime update. Just fontFamily=""
 
+Do you like it? Help develop, give :star:
+
 ## Install and usage:
 ```
 yarn add rn-picostyle
