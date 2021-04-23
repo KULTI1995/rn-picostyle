@@ -1,14 +1,15 @@
 {
   "name": "rn-picostyle",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Created with great love by Kamil Niedbalski. Nickname Json. website: pixelkoduje.pl",
   "repository": {
-    "url": "https://github.com/KULTI1995/picostyle",
+    "url": "https://github.com/KULTI1995/rn-picostyle",
     "type": "git"
   },
   "keywords": [
     "react-native",
-    "expo"
+    "expo",
+    "tailwind"
   ],
   "main": "mikroTW.tsx",
   "author": "Kamil Niedbalski <pixelkoduje@gmail.com> (pixelkoduje.pl)",
