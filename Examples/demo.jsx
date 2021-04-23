@@ -140,7 +140,7 @@ const Main = () => {
       <Row center>
         <SquarePosition/>
         <SquarePosition />
-        <SquarePosition  className="rotate-15" color="bg-purple-200" />
+        <SquarePosition className="rotate-15" color="bg-purple-200" />
         <SquarePosition color="bg-purple-200" />
         <SquarePosition />
       </Row>

@@ -12,13 +12,22 @@
 <ReservationCaptionText fontFamily="Lato_400Regular">Reserved</ReservationCaptionText>
 ```
 
+## Install and usage:
+```
+yarn add rn-picostyle
+npm install -S rn-picostyle
+```
+```
+import tw, { ThemeProvider, LocalizationProvider, useTheme, useLocalization, combineProviders, FlexBox, Layout, Spacing, Typography, Effects, useContext } from 'rn-picostyle'
+```
+
 ## demo
-#### Just looking. It contains everything you need to know!  [Link](https://github.com/KULTI1995/rn-picostyle/blob/master/Examples/demo.jsx "This is demo")
+#### Just looking. It contains everything you need to know!  [Link](https://github.com/KULTI1995/picostyle/examples/index.jsx "Heading link")
 <img src="https://user-images.githubusercontent.com/14282128/115757576-c29a8980-a39e-11eb-8ecd-7c6905fdbf71.png" width="60%">
 
 ## Guide
 
-#### 1.Global Contex - No more nesting.
+#### Global Contex - No more nesting.
 
 ```react
 const AppProvider = combineProviders([
@@ -52,8 +61,10 @@ and use:
 ```
  const { theme } = useContext(useTheme)
  ```
- 
-#### 2.Inline flex, or mix?
+
+### Styling
+
+#### 1. Inline flex, or mix?
 Layout, Spacing, Typography, Effects - syntax like styled system, for you. :)
 ```react
 const Row = tw.View`${Layout} ${Spacing} ${FlexBox} ${Typography} ${Effects}`
@@ -61,13 +72,13 @@ const Row = tw.View`${Layout} ${Spacing} ${FlexBox} ${Typography} ${Effects}`
 And automatic suggesting, you do not have to do anything. No thank you, put the coffee down. :)
 
 
-#### 3.Inheritance and style override
+#### 2. Inheritance and style override
 ```react
 const SquarePosition = tw.View`bg-red-200`
 const SquareInner = tw(SquarePosition)`bg-blue-200`
 ```
 
-#### 4.Animation? No problem, just use AnimatableView/AnimatableText (Support all of react-native-animatable)
+#### 3. Animation? No problem, just use AnimatableView/AnimatableText (Support all of react-native-animatable)
 - Support syntax: native:Bollean, animation:TYPE, iterationDelay:TIME, easing:ease-out, direction:DIRECTION, iterationCount:infinite, delay:TIME
 - Support Animations TYPE: bounce flash jello pulse rotate rubberBand shake swing tada wobble etc. (Support all of react-native-animatable)
 
@@ -75,10 +86,27 @@ const SquareInner = tw(SquarePosition)`bg-blue-200`
 const FooterRightBuyButton = tw.AnimatableView`animation:pulse iterationDelay:2000 easing:ease-out iterationCount:infinite`
 ```
 
-#### 5.Gradient? Just change View, to LinearGradient. Like Tailwind syntax, and support tailwind color.
+#### 4. Gradient? Just change View, to LinearGradient. Like Tailwind syntax, and support tailwind color.
 ```react
 const LinearGradientBox = tw.LinearGradient`from-red-400 via-red-200 to-transparent gradient-to-tr`
 ```
+#### 5. Iterable element? Use special pseudo classes. No extra steps, just write.
+Pseudo: fist, last, odd, even
+
+```react
+const Box = tw.View`w-8 h-8 bg-red-200 rounded m-1 last:bg-pink-200 first:bg-blue-200`
+
+<Row center>
+  <Box/>
+  <Box/>
+  <Box/>
+  <Box/>
+  <Box/>
+  <Box/>
+</Row>
+```
+#### 6. Using fonts, no extra steps!(DEV) Over 2500 to choose from. With prompting, but not only for fonts !
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/14282128/115872915-a3553800-a442-11eb-98b2-7400c6310e51.gif)
 
 ### TODO:
 - Improving and increasing the speed
