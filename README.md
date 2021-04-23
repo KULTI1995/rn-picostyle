@@ -22,7 +22,7 @@ import tw, { ThemeProvider, LocalizationProvider, useTheme, useLocalization, com
 ```
 
 ## demo
-#### Just looking. It contains everything you need to know!  [Link](https://github.com/KULTI1995/picostyle/examples/index.jsx "Heading link")
+#### Just looking. It contains everything you need to know!  [Link](https://github.com/KULTI1995/rn-picostyle/blob/master/Examples/demo.jsx "Link to showcase project")
 <img src="https://user-images.githubusercontent.com/14282128/115757576-c29a8980-a39e-11eb-8ecd-7c6905fdbf71.png" width="60%">
 
 ## Guide
